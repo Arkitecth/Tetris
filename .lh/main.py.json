@@ -1,0 +1,26 @@
+{
+    "sourceFile": "main.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1705178423734,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1705178439811,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,4 +10,8 @@\n         if event.type == pygame.QUIT:\n             running = False\n \n     screen.fill(\"purple\")\n+\n+    pygame.display.flip() \n+\n+    clock.tick(60)\n"
+                },
+                {
+                    "date": 1705178478304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n import pygame\n \n # pygame setup\n pygame.init()\n-screen = pygame.display.set_mode()\n+screen = pygame.display.set_mode((800,600))\n clock = pygame.time.Clock()\n running = True\n while running:\n     for event in pygame.event.get():\n@@ -14,4 +14,6 @@\n \n     pygame.display.flip()\n \n     clock.tick(60)\n+\n+pygame.quit*()\n"
+                }
+            ],
+            "date": 1705178423734,
+            "name": "Commit-0",
+            "content": "import pygame\n\n# pygame setup\npygame.init()\nscreen = pygame.display.set_mode()\nclock = pygame.time.Clock() \nrunning = True \nwhile running:\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT: \n            running = False \n    \n    screen.fill(\"purple\")\n\n"
+        }
+    ]
+}
