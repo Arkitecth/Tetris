@@ -3,6 +3,7 @@ import pygame
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
+name = pygame.display.set_caption("Tetris")
 clock = pygame.time.Clock()
 running = True
 while running:
@@ -10,10 +11,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill("purple")
+    screen.fill("black")
 
     pygame.display.flip()
 
     clock.tick(60)
 
-pygame.quit*()
+pygame.quit()
