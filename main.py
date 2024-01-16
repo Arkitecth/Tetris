@@ -1,20 +1,30 @@
 import pygame
 
 # pygame setup
-pygame.init()
-screen = pygame.display.set_mode((800, 600))
-name = pygame.display.set_caption("Tetris")
-clock = pygame.time.Clock()
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
 
-    screen.fill("black")
 
-    pygame.display.flip()
+class Game:
+    def __init__(self, width, height) -> None:
+        pygame.init()
+        self.screen = pygame.display.set_mode((width, height))
+        self.screen.fill("black")
+        self.running = True
+        self.clock = pygame.time.Clock()
 
-    clock.tick(60)
+    def start(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+            self.screen.fill("black")
+            pygame.display.flip()
+            self.clock.tick(60)
 
-pygame.quit()
+
+def main():
+    game = Game(800, 600)
+    game.start()
+    pygame.quit()
+
+
+main()
