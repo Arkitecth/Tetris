@@ -9,32 +9,22 @@ class Square:
     def __init__(self, pos) -> None:
         self.pos = pos
         self.color = "blue"
-        self.rect = []
-        self.build_rectangle()
-
-    def build_rectangle(self):
-        x_increment = 0
-        for _ in range(2):
-            self.rect.append(pygame.Rect(400 + x_increment, 10, 20, 20))
-            self.rect.append(pygame.Rect(
-                400 + x_increment, 20, 20, 20))
-            x_increment += 10
+        self.win = win
+        self.rect = pygame.Rect(400, 10, 20, 20)
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
-            for rect in self.rect:
-                rect.move_ip(-1, 0)
+            self.rect.move_ip(-1, 0)
         if key[pygame.K_RIGHT]:
-            for rect in self.rect:
-                rect.move_ip(1, 0)
+            self.rect.move_ip(1, 0)
         if key[pygame.K_DOWN]:
-            for rect in self.rect:
-                rect.move_ip(0, 1)
+            self.rect.move_ip(0, 1)
 
-    def draw(self, surface):
-        for rect in self.rect:
-            pygame.draw.rect(surface, (0, 0, 128), rect, 2)
+    def draw(self):
+        rect = pygame.draw.rect(self.win, self.color,
+                                self.rect)
+        return rect
 
 
 class Game:
