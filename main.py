@@ -9,8 +9,10 @@ class Square:
     def __init__(self, pos) -> None:
         self.pos = pos
         self.color = "blue"
-        self.win = win
-        self.rect = pygame.Rect(400, 10, 20, 20)
+        self.rect = pygame.Rect(400, 10, 40, 40)
+
+    def move_down(self):
+        self.rect.move_ip(0, 1)
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
@@ -21,10 +23,9 @@ class Square:
         if key[pygame.K_DOWN]:
             self.rect.move_ip(0, 1)
 
-    def draw(self):
-        rect = pygame.draw.rect(self.win, self.color,
+    def draw(self, win):
+        return pygame.draw.rect(win, self.color,
                                 self.rect)
-        return rect
 
 
 class Game:
@@ -40,14 +41,15 @@ class Game:
     def start(self):
         square = Square((0, 0))
         while self.running:
-            self.draw_grid()
-            square.draw(self.screen)
             square.handle_keys()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            # self.screen.fill("black")
+            self.screen.fill("black")
+            self.draw_grid()
+            square.draw(self.screen)
             pygame.display.flip()
+            square.move_down()
             self.clock.tick(60)
 
     def draw_grid(self):
