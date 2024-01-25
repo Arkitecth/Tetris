@@ -5,29 +5,36 @@ import pygame
 WHITE = (200, 200, 200)
 
 
-class Position:
-    def __init__(self, x, y) -> None:
-        self.x = x
-        self.y = y
-
-
 class Square:
     def __init__(self, pos) -> None:
         self.pos = pos
         self.color = "blue"
-        self.rect = pygame.Rect(400, 10, 60, 60)
+        self.rect = []
+        self.build_rectangle()
+
+    def build_rectangle(self):
+        x_increment = 0
+        for _ in range(2):
+            self.rect.append(pygame.Rect(400 + x_increment, 10, 20, 20))
+            self.rect.append(pygame.Rect(
+                400 + x_increment, 20, 20, 20))
+            x_increment += 10
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
-            self.rect.move_ip(-1, 0)
+            for rect in self.rect:
+                rect.move_ip(-1, 0)
         if key[pygame.K_RIGHT]:
-            self.rect.move_ip(1, 0)
+            for rect in self.rect:
+                rect.move_ip(1, 0)
         if key[pygame.K_DOWN]:
-            self.rect.move_ip(0, 1)
+            for rect in self.rect:
+                rect.move_ip(0, 1)
 
     def draw(self, surface):
-        pygame.draw.rect(surface, (0, 0, 128), self.rect)
+        for rect in self.rect:
+            pygame.draw.rect(surface, (0, 0, 128), rect, 2)
 
 
 class Game:
@@ -41,7 +48,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
     def start(self):
-        square = Square((0, 0), self.screen)
+        square = Square((0, 0))
         while self.running:
             self.draw_grid()
             square.draw(self.screen)
