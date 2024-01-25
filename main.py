@@ -16,13 +16,20 @@ class Square:
         self.pos = pos
         self.color = "blue"
         self.win = win
+        self.rect = pygame.Rect(400, 10, 20, 20)
 
-    def move(self, rect, pos):
-        rect.move_ip(pos)
+    def handle_keys(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_LEFT]:
+            self.rect.move_ip(-1, 0)
+        if key[pygame.K_RIGHT]:
+            self.rect.move_ip(1, 0)
+        if key[pygame.K_DOWN]:
+            self.rect.move_ip(0, 1)
 
     def draw(self):
         rect = pygame.draw.rect(self.win, self.color,
-                                pygame.Rect(400, 10, 60, 60))
+                                self.rect)
         return rect
 
 
@@ -40,8 +47,8 @@ class Game:
         tetronimoe = Square((0, 0), self.screen)
         while self.running:
             self.draw_grid()
-            piece = tetronimoe.draw()
-            tetronimoe.move(piece, (500, 500))
+            tetronimoe.handle_keys()
+            tetronimoe.draw()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
