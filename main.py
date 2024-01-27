@@ -17,13 +17,14 @@ class Square:
             self.rect.move_ip(0, 1)
 
     def handle_keys(self):
-        key = pygame.key.get_pressed()
-        if key[pygame.K_LEFT]:
-            self.rect.move_ip(-1, 0)
-        if key[pygame.K_RIGHT]:
-            self.rect.move_ip(1, 0)
-        if key[pygame.K_DOWN]:
-            self.rect.move_ip(0, 1)
+        if self.move:
+            key = pygame.key.get_pressed()
+            if key[pygame.K_LEFT]:
+                self.rect.move_ip(-1, 0)
+            if key[pygame.K_RIGHT]:
+                self.rect.move_ip(1, 0)
+            if key[pygame.K_DOWN]:
+                self.rect.move_ip(0, 1)
 
     def draw(self):
         return pygame.draw.rect(self.screen, self.color,
