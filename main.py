@@ -6,13 +6,15 @@ WHITE = (200, 200, 200)
 
 
 class Square:
-    def __init__(self, pos) -> None:
-        self.pos = pos
+    def __init__(self, screen) -> None:
+        self.screen = screen
         self.color = "blue"
         self.rect = pygame.Rect(400, 10, 40, 40)
+        self.move = True
 
     def move_down(self):
-        self.rect.move_ip(0, 1)
+        if self.move:
+            self.rect.move_ip(0, 1)
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
@@ -23,9 +25,17 @@ class Square:
         if key[pygame.K_DOWN]:
             self.rect.move_ip(0, 1)
 
-    def draw(self, win):
-        return pygame.draw.rect(win, self.color,
+    def draw(self):
+        return pygame.draw.rect(self.screen, self.color,
                                 self.rect)
+
+    def detect_collission(self):
+        # Bottom of the screen
+        bottom_screen = self.screen.get_height()
+        bottom_square = self.rect.bottom
+        # Bottom of the square
+        if bottom_square == bottom_screen:
+            self.move = False
 
 
 class Game:
@@ -39,15 +49,17 @@ class Game:
         self.clock = pygame.time.Clock()
 
     def start(self):
-        square = Square((0, 0))
+        square = Square(self.screen)
+        self.screen.get_height()
         while self.running:
             square.handle_keys()
+            square.detect_collission()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
             self.screen.fill("black")
             self.draw_grid()
-            square.draw(self.screen)
+            square.draw()
             pygame.display.flip()
             square.move_down()
             self.clock.tick(60)
