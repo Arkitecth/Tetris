@@ -16,6 +16,13 @@ class Square:
         if self.move:
             self.rect.move_ip(0, 1)
 
+    def detect_collission(self, wall):
+        # Bottom of the screen
+        if self.rect.colliderect(wall):
+            self.move = False
+            return True
+        return False
+
     def handle_keys(self):
         if self.move:
             key = pygame.key.get_pressed()
@@ -36,38 +43,34 @@ class Game:
         pygame.init()
         self.width = width
         self.height = height
+        pygame.display.set_caption("Tetris")
         self.screen = pygame.display.set_mode((width, height))
         self.screen.fill("black")
         self.running = True
         self.clock = pygame.time.Clock()
+        self.pieces = []
+        self.wall = pygame.Rect(0, 600, width, 10)
 
     def generate_shape(self):
-        return Square(self.screen)
-
-    def detect_collission(self, piece):
-        # Bottom of the screen
-        bottom_screen = self.screen.get_height()
-        bottom_square = piece.rect.bottom
-        # Bottom of the square
-        if bottom_square == bottom_screen:
-            piece.move = False
-        # Generate random shape
+        self.pieces.append(Square(self.screen))
 
     def start(self):
-        square = Square(self.screen)
-        self.screen.get_height()
+        self.generate_shape()
         while self.running:
-            square.handle_keys()
-            self.detect_collission(square)
+            pygame.draw.rect(self.screen, "blue", self.wall)
+            self.draw_grid()
+            for piece in self.pieces:
+                piece.draw()
+                if piece.move and piece.detect_collission(self.wall):
+                    self.generate_shape()
+                piece.handle_keys()
+            self.clock.tick(60)
+            piece.move_down()
+            pygame.display.flip()
+            self.screen.fill("black")
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            self.screen.fill("black")
-            self.draw_grid()
-            square.draw()
-            pygame.display.flip()
-            square.move_down()
-            self.clock.tick(60)
 
     def draw_grid(self):
         blockSize = 20
@@ -84,3 +87,12 @@ def main():
 
 
 main()
+
+
+# Generate new Blocks Whenver a block hits the ground
+# Generate new Blocks whenever a collission with a square occurs
+# Stop Blocks whenever a collission occurs
+# Generate random shapes
+# Calculate score
+# Restart Game
+# Determine Game Over
