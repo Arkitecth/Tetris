@@ -16,9 +16,9 @@ class Square:
         if self.move:
             self.rect.move_ip(0, 1)
 
-    def detect_collission(self, wall):
+    def detect_collission(self, wall, pieces):
         # Bottom of the screen
-        if self.rect.colliderect(wall):
+        if self.rect.colliderect(wall) or self.rect.collidelist(pieces) != -1:
             self.move = False
             return True
         return False
@@ -48,24 +48,27 @@ class Game:
         self.screen.fill("black")
         self.running = True
         self.clock = pygame.time.Clock()
+        self.current_piece = None
         self.pieces = []
         self.wall = pygame.Rect(0, 600, width, 10)
 
     def generate_shape(self):
-        self.pieces.append(Square(self.screen))
+        self.current_piece = Square(self.screen)
 
     def start(self):
         self.generate_shape()
         while self.running:
             pygame.draw.rect(self.screen, "blue", self.wall)
             self.draw_grid()
+            self.current_piece.draw()
+            self.current_piece.handle_keys()
+            if self.current_piece.move and self.current_piece.detect_collission(self.wall, self.pieces):
+                self.pieces.append(self.current_piece)
+                self.generate_shape()
             for piece in self.pieces:
                 piece.draw()
-                if piece.move and piece.detect_collission(self.wall):
-                    self.generate_shape()
-                piece.handle_keys()
             self.clock.tick(60)
-            piece.move_down()
+            self.current_piece.move_down()
             pygame.display.flip()
             self.screen.fill("black")
             for event in pygame.event.get():
