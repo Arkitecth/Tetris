@@ -1,5 +1,5 @@
 import pygame
-
+import random
 # pygame setup
 
 WHITE = (200, 200, 200)
@@ -10,6 +10,40 @@ class Square:
         self.screen = screen
         self.color = "blue"
         self.rect = pygame.Rect(400, 10, 40, 40)
+        self.move = True
+
+    def move_down(self):
+        if self.move:
+            self.rect.move_ip(0, 1)
+
+    def detect_collission(self, wall, pieces):
+        # Bottom of the screen
+        if self.rect.colliderect(wall) or self.rect.collidelist(pieces) != -1:
+            self.move = False
+            return True
+        return False
+
+    def handle_keys(self):
+        if self.move:
+            key = pygame.key.get_pressed()
+            if key[pygame.K_LEFT]:
+                self.rect.move_ip(-1, 0)
+            if key[pygame.K_RIGHT]:
+                self.rect.move_ip(1, 0)
+            if key[pygame.K_DOWN]:
+                self.rect.move_ip(0, 1)
+
+    def draw(self):
+        return pygame.draw.rect(self.screen, self.color,
+                                self.rect)
+
+
+# Refactor to abstract class
+class Straight:
+    def __init__(self, screen) -> None:
+        self.screen = screen
+        self.color = "red"
+        self.rect = pygame.Rect(400, 10, 20, 60)
         self.move = True
 
     def move_down(self):
@@ -53,12 +87,13 @@ class Game:
         self.wall = pygame.Rect(0, 600, width, 10)
 
     def generate_shape(self):
-        self.current_piece = Square(self.screen)
+        self.shapes = {1: Square(self.screen), 2: Straight(self.screen)}
+        key = random.randint(1, len(self.shapes))
+        self.current_piece = self.shapes[key]
 
     def start(self):
         self.generate_shape()
         while self.running:
-            pygame.draw.rect(self.screen, "blue", self.wall)
             self.draw_grid()
             self.current_piece.draw()
             self.current_piece.handle_keys()
