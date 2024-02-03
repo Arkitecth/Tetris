@@ -63,9 +63,15 @@ class Straight:
         if self.move:
             self.rect.move_ip(0, 1)
 
-    def detect_collission(self, wall, pieces):
+    def detect_collission_part(self, pieces):
+        for piece in pieces:
+            if self.rect.colliderect(piece):
+                self.move = False
+                return True
+
+    def detect_collission_wall(self, wall):
         # Bottom of the screen
-        if self.rect.colliderect(wall) or self.rect.collidelist(pieces) != -1:
+        if self.rect.colliderect(wall):
             self.move = False
             return True
         return False
