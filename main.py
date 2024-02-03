@@ -91,17 +91,20 @@ class Game:
         key = random.randint(1, len(self.shapes))
         self.current_piece = self.shapes[key]
 
+    def draw_pieces(self):
+        self.current_piece.draw()
+        for piece in self.pieces:
+            piece.draw()
+
     def start(self):
         self.generate_shape()
         while self.running:
             self.draw_grid()
-            self.current_piece.draw()
+            self.draw_pieces()
             self.current_piece.handle_keys()
             if self.current_piece.move and self.current_piece.detect_collission(self.wall, self.pieces):
                 self.pieces.append(self.current_piece)
                 self.generate_shape()
-            for piece in self.pieces:
-                piece.draw()
             self.clock.tick(60)
             self.current_piece.move_down()
             pygame.display.flip()
