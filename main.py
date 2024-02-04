@@ -47,8 +47,10 @@ class Square:
         return True
 
     def draw(self):
-        return pygame.draw.rect(self.screen, self.color,
-                                self.rect)
+        pygame.draw.rect(self.screen, self.color, self.rect)
+        border_color = "red"  # White color for the border
+        border_width = 3  # Change this to increase or decrease border thickness
+        pygame.draw.rect(self.screen, border_color, self.rect, border_width)
 
 
 # Refactor to abstract class
